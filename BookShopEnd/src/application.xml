@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+     xmlns:context="http://www.springframework.org/schema/context"
+     xmlns:tx="http://www.springframework.org/schema/tx"
+     xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.3.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+        
+        <!-- 配置Spring上下文的注解 -->
+		<context:annotation-config />
+		<!-- 使用annotation 自动注册bean, 并保证@Required、@Autowired的属性被注入 -->
+		<context:component-scan base-package="com.rj.bookshop">
+			<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+		</context:component-scan>
+		
+		<!--数据库的配置-->
+		<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+			<property name="driverClassName" value="com.mysql.jdbc.Driver"> </property>
+			<property name="url" value="jdbc:mysql://localhost:3306/bookshopend_db?characterEncoding=utf8"></property>
+			<property name="username" value="root"></property>
+			<property name="password" value=""></property>
+		</bean>	
+			
+		<!-- hibernate 配置 -->        
+		<bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+				<property name="dataSource" ref="dataSource"></property>
+				<property name="packagesToScan" value="com.rj.bookshop.Entity"></property>
+				<property name="hibernateProperties">
+					<props>
+						<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+						<prop key="hibernate.show_sql">true</prop>
+						<prop key="hibernate.format_sql">false</prop>
+						<prop key="hibernate.userUnicode">true</prop>
+						<prop key="hibernate.characterEncoding">true</prop>
+					</props>
+				</property>
+		</bean>
+		  
+</beans>
